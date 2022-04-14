@@ -73,9 +73,56 @@ test('renders "lastName is a required field" if an last name is not entered and 
 });
 
 test('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
+    const firstNameInput = screen.getByPlaceholderText('Edd');
+    const lastNameInput = screen.getByPlaceholderText('Burke');
+    const emailInput = screen.getByPlaceholderText('bluebill1049@hotmail.com');
 
+    userEvent.type(firstNameInput, 'Rebecca');
+    userEvent.type(lastNameInput, 'Rebecca');
+    userEvent.type(emailInput, 'anemail@email.com');
+    
+    const button = screen.getByRole('button');
+    userEvent.click(button);
+
+    const firstResult = await screen.findByTestId('firstnameDisplay');
+    const lastResult = await screen.findByTestId('lastnameDisplay');
+    const emailResult = await screen.findByTestId('emailDisplay');
+
+
+    expect(firstResult).toBeInTheDocument();
+    expect(firstResult).toHaveTextContent('Rebecca', {exact: false});
+    expect(lastResult).toBeInTheDocument();
+    expect(lastResult).toHaveTextContent('Rebecca', {exact: false});
+    expect(emailResult).toBeInTheDocument();
+    expect(emailResult).toHaveTextContent('anemail@email.com', {exact: false});
 });
 
 test('renders all fields text when all fields are submitted.', async () => {
+    const firstNameInput = screen.getByPlaceholderText('Edd');
+    const lastNameInput = screen.getByPlaceholderText('Burke');
+    const emailInput = screen.getByPlaceholderText('bluebill1049@hotmail.com');
+    const messageInput = screen.getByLabelText('Message');
 
+    userEvent.type(firstNameInput, 'Rebecca');
+    userEvent.type(lastNameInput, 'Rebecca');
+    userEvent.type(emailInput, 'anemail@email.com');
+    userEvent.type(messageInput, 'testing is great');
+    
+    const button = screen.getByRole('button');
+    userEvent.click(button);
+
+    const firstResult = await screen.findByTestId('firstnameDisplay');
+    const lastResult = await screen.findByTestId('lastnameDisplay');
+    const emailResult = await screen.findByTestId('emailDisplay');
+    const messageResult = await screen.findByTestId('messageDisplay');
+
+
+    expect(firstResult).toBeInTheDocument();
+    expect(firstResult).toHaveTextContent('Rebecca', {exact: false});
+    expect(lastResult).toBeInTheDocument();
+    expect(lastResult).toHaveTextContent('Rebecca', {exact: false});
+    expect(emailResult).toBeInTheDocument();
+    expect(emailResult).toHaveTextContent('anemail@email.com', {exact: false});
+    expect(messageResult).toBeInTheDocument();
+    expect(messageResult).toHaveTextContent('testing is great');
 });
