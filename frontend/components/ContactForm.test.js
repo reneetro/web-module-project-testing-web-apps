@@ -28,6 +28,7 @@ test('renders ONE error message if user enters less then 5 characters into first
     const error = await screen.findByTestId('error');
 
     expect(error).toBeInTheDocument();
+    expect(error).toHaveTextContent('firstName must have at least 5 characters.', {exact: false});
 });
 
 test('renders THREE error messages if user enters no values into any fields.', async () => {
@@ -51,14 +52,24 @@ test('renders ONE error message if user enters a valid first name and last name 
     
     const error = await screen.findByTestId('error');
     expect(error).toBeInTheDocument();
+    expect(error).toHaveTextContent('email must be a valid email address.', {exact: false});
 });
 
 test('renders "email must be a valid email address" if an invalid email is entered', async () => {
-    
+    const emailInput = screen.getByPlaceholderText('bluebill1049@hotmail.com');
+    userEvent.type(emailInput, 'foo');
+
+    const error = await screen.findByTestId('error');
+    expect(error).toBeInTheDocument();
+    expect(error).toHaveTextContent('email must be a valid email address.', {exact: false});
 });
 
 test('renders "lastName is a required field" if an last name is not entered and the submit button is clicked', async () => {
+    const button = screen.getByRole('button');
+    userEvent.click(button);
 
+    const errors = await screen.findAllByTestId('error');
+    expect(errors[1]).toHaveTextContent('lastName is a required field');
 });
 
 test('renders all firstName, lastName and email text when submitted. Does NOT render message if message is not submitted.', async () => {
