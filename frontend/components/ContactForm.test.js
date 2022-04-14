@@ -84,10 +84,10 @@ test('renders all firstName, lastName and email text when submitted. Does NOT re
     const button = screen.getByRole('button');
     userEvent.click(button);
 
-    const firstResult = await screen.findByTestId('firstnameDisplay');
-    const lastResult = await screen.findByTestId('lastnameDisplay');
-    const emailResult = await screen.findByTestId('emailDisplay');
-
+    const firstResult = screen.getByTestId('firstnameDisplay');
+    const lastResult = screen.getByTestId('lastnameDisplay');
+    const emailResult = screen.getByTestId('emailDisplay');
+    const messageResult = screen.queryByTestId('messageDisplay');
 
     expect(firstResult).toBeInTheDocument();
     expect(firstResult).toHaveTextContent('Rebecca', {exact: false});
@@ -95,6 +95,7 @@ test('renders all firstName, lastName and email text when submitted. Does NOT re
     expect(lastResult).toHaveTextContent('Rebecca', {exact: false});
     expect(emailResult).toBeInTheDocument();
     expect(emailResult).toHaveTextContent('anemail@email.com', {exact: false});
+    expect(messageResult).not.toBeInTheDocument();
 });
 
 test('renders all fields text when all fields are submitted.', async () => {
